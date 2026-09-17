@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route List | RouteWatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 20px;
+        }
+        .topbar {
+            background: #0f172a;
+            color: white;
+            padding: 20px 0;
+        }
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .nav-links a {
+            color: #dbeafe;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .page-title {
+            margin: 24px 0 20px;
+            font-size: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        th, td {
+            text-align: left;
+            padding: 16px 18px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            background: #eff6ff;
+        }
+        .status-pill {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            background: #dbeafe;
+            color: #1e3a8a;
+            text-transform: capitalize;
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="nav">
+            <div class="brand">RouteWatch</div>
+            <nav class="nav-links">
+                <a href="/">Dashboard</a>
+                <a href="/routes/">Routes</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">Routes</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for route in routes %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ route.title }}</td>
+                    <td><span class="status-pill">{{ route.status }}</span></td>
+                    <td>{{ route.location }} · Injuries: {{ route.injuries }} · Factor: {{ route.factor }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No public road data available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

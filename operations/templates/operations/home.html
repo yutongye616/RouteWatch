@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RouteWatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 20px 48px;
+        }
+        .topbar {
+            background: #0f172a;
+            color: white;
+            padding: 20px 0;
+        }
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand {
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+        .nav-links a {
+            color: #dbeafe;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .hero {
+            background: linear-gradient(135deg, #0f172a, #1d4ed8);
+            border-radius: 18px;
+            color: white;
+            padding: 32px;
+            margin-top: 24px;
+        }
+        .hero h1 {
+            margin: 0 0 12px;
+            font-size: 2.5rem;
+        }
+        .hero p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #dbeafe;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+            margin-top: 24px;
+        }
+        .road-box {
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+            border: 1px solid #bfdbfe;
+        }
+        .road-line {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+            padding: 20px;
+        }
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        .section {
+            margin-top: 30px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .section-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .section-header a {
+            text-decoration: none;
+            color: #1d4ed8;
+            font-weight: bold;
+        }
+        .route-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+        .route-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+        }
+        .route-code {
+            color: #1d4ed8;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .route-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+        .status-pill {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            background: #dbeafe;
+            color: #1e3a8a;
+            text-transform: capitalize;
+        }
+        .muted {
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="nav">
+            <div class="brand">RouteWatch</div>
+            <nav class="nav-links">
+                <a href="/">Dashboard</a>
+                <a href="/routes/">Routes</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Transit operations dashboard</h1>
+            <p>Track route health, service alerts, and maintenance issues in one clear view.</p>
+        </div>
+
+        <div class="road-box">
+            <p class="road-line">Live NYC road data: {{ road_data.location }} — {{ road_data.injuries }} injured — {{ road_data.factor }}</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-label">Routes</div>
+                <div class="stat-value">{{ total_routes }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Active alerts</div>
+                <div class="stat-value">{{ active_alerts }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Open incidents</div>
+                <div class="stat-value">{{ open_incidents }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Open maintenance</div>
+                <div class="stat-value">{{ open_maintenance }}</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Route overview</h2>
+                <a href="/routes/">View all routes</a>
+            </div>
+
+            <div class="route-grid">
+                {% for route in routes %}
+                <div class="route-card">
+                    <div class="route-code">{{ route.title }}</div>
+                    <div class="route-name">{{ route.location }}</div>
+                    <div class="status-pill">{{ route.status }}</div>
+                    <p class="muted">Injuries: {{ route.injuries }}</p>
+                    <p class="muted">Factor: {{ route.factor }}</p>
+                </div>
+                {% empty %}
+                <p>No public road data available yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

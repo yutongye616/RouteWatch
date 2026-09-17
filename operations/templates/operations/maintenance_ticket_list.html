@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Tickets | RouteWatch</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7fb; margin: 0; color: #1f2937; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 32px 20px; }
+        .topbar { background: #0f172a; color: white; padding: 20px 0; }
+        .nav { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-size: 1.5rem; font-weight: bold; }
+        .nav-links a { color: #dbeafe; text-decoration: none; margin-left: 20px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin: 28px 0 18px; }
+        .page-header h1 { margin: 0; }
+        .new-button { background: #1d4ed8; color: white; text-decoration: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08); }
+        th, td { text-align: left; padding: 16px 18px; border-bottom: 1px solid #e5e7eb; }
+        th { background: #eff6ff; }
+        .status { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: bold; text-transform: capitalize; }
+        .status.open { background: #fee2e2; color: #991b1b; }
+        .status.in_progress { background: #dbeafe; color: #1e3a8a; }
+        .status.pending { background: #fef3c7; color: #92400e; }
+        .status.resolved { background: #d1fae5; color: #065f46; }
+        .priority { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: bold; text-transform: capitalize; }
+        .priority.low { background: #d1fae5; color: #065f46; }
+        .priority.medium { background: #fef3c7; color: #92400e; }
+        .priority.high { background: #fee2e2; color: #991b1b; }
+        .priority.critical { background: #7f1d1d; color: white; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="nav">
+            <div class="brand">RouteWatch</div>
+            <nav class="nav-links">
+                <a href="/">Dashboard</a>
+                <a href="/routes/">Routes</a>
+                <a href="/alerts/">Alerts</a>
+                <a href="/incidents/">Incidents</a>
+                <a href="/maintenance/">Maintenance</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Maintenance Tickets</h1>
+            <a class="new-button" href="/maintenance/new/">+ Add ticket</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Route</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Assigned</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.route.code|default:"N/A" }}</td>
+                    <td>{{ ticket.title }}</td>
+                    <td><span class="status {{ ticket.status }}">{{ ticket.status|cut:"_"|title }}</span></td>
+                    <td><span class="priority {{ ticket.priority }}">{{ ticket.priority|title }}</span></td>
+                    <td>{{ ticket.assigned_to|default:"Unassigned" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No maintenance tickets found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

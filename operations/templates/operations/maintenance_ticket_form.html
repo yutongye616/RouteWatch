@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Maintenance Ticket | RouteWatch</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7fb; margin: 0; color: #1f2937; }
+        .container { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
+        .topbar { background: #0f172a; color: white; padding: 20px 0; }
+        .nav { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-size: 1.5rem; font-weight: bold; }
+        .nav-links a { color: #dbeafe; text-decoration: none; margin-left: 20px; }
+        .panel { background: white; border-radius: 12px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08); padding: 24px; }
+        form { display: grid; gap: 16px; }
+        label { font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box; }
+        textarea { min-height: 120px; }
+        button { background: #1d4ed8; color: white; border: none; padding: 12px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="nav">
+            <div class="brand">RouteWatch</div>
+            <nav class="nav-links">
+                <a href="/">Dashboard</a>
+                <a href="/routes/">Routes</a>
+                <a href="/alerts/">Alerts</a>
+                <a href="/incidents/">Incidents</a>
+                <a href="/maintenance/">Maintenance</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="panel">
+            <h1>Create Maintenance Ticket</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div>
+                    <label for="route">Route</label>
+                    <select name="route" id="route" required>
+                        <option value="">Select a route</option>
+                        {% for route in routes %}
+                        <option value="{{ route.id }}">{{ route.code }} - {{ route.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="vehicle">Vehicle</label>
+                    <select name="vehicle" id="vehicle">
+                        <option value="">No vehicle</option>
+                        {% for vehicle in vehicles %}
+                        <option value="{{ vehicle.id }}">{{ vehicle.vehicle_id }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+
+                <div>
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+
+                <div>
+                    <label for="status">Status</label>
+                    <select name="status" id="status">
+                        <option value="open" selected>Open</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="pending">Pending</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="priority">Priority</label>
+                    <select name="priority" id="priority">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="assigned_to">Assigned To</label>
+                    <input type="text" id="assigned_to" name="assigned_to">
+                </div>
+
+                <button type="submit">Save Ticket</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
